@@ -1,0 +1,8 @@
+{% extends "irclogs/base.html" %}
+{% block content %}
+    {% for message in messages %}
+        {{ message.nick }} said {{ message.body }} at {{ message.created }}<br>
+    {% else %}
+        no messages
+    {% endfor %}
+{% endblock %}
