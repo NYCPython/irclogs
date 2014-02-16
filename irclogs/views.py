@@ -1,22 +1,23 @@
 from datetime import datetime, timedelta
 
-from flask import Blueprint, abort, render_template
+from flask import Blueprint, abort, current_app, send_from_directory
 
 from .models import Message
 
-bp = Blueprint('irclogs', __name__, static_folder='static', template_folder='templates')
+angular_blueprint = Blueprint('irclogs', __name__, static_folder='static', template_folder='templates', url_prefix='/')
 
-@bp.route('/')
-def index():
-    messages = Message.query.all()
-    return render_template('irclogs/index.html', messages=messages)
+@angular_blueprint.route('/')
+def angular_resources(filename='/'):
+    '''Handles sending angular resources to the browser
 
-@bp.route('/<int:year>/<int:month>/<int:day>/')
-def date_view(year, month, day):
-    try:
-        date = datetime(year=year, month=month, day=day)
-    except ValueError:
-        abort(404)
+    Note: this should be used only when a static webserver 
+    is not available (ex. local development). When deployed, 
+    point your webserver to the angular resource directory 
+    instead of allowing flask to handle the files. Performance 
+    will be greatly improved.
 
-    messages = Message.query.filter(Message.created >= date, Message.created < (date + timedelta(days=1)))
-    return render_template('irclogs/index.html', messages=messages)
+    '''
+    if not filename or filename == '/':
+        filename = 'index.html'
+    print(current_app.config['ANGULAR_RESOURCE_DIRECTORY'])
+    return send_from_directory(current_app.config['ANGULAR_RESOURCE_DIRECTORY'], filename)

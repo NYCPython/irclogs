@@ -1,3 +1,6 @@
 import os
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(os.path.dirname(__file__), 'dev.db'))
+ROOT = os.path.dirname(__file__)
+
+SQLALCHEMY_DATABASE_URI = 'sqlite:///{}'.format(os.path.join(ROOT, 'dev.db'))
+ANGULAR_RESOURCE_DIRECTORY = os.path.join(ROOT, 'angular')
