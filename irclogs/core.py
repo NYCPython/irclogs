@@ -1,4 +1,5 @@
 from flask import Flask
+from flask.ext.foundation import Foundation
 from flask.ext.restless import APIManager
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -10,7 +11,8 @@ def create_app():
     app.config.from_object('irclogs.settings')
     db.init_app(app)
     api.init_app(app, flask_sqlalchemy_db=db)
-    from .views import angular_blueprint
-    app.register_blueprint(angular_blueprint)
+    Foundation(app)
+    from .views import frontend
+    app.register_blueprint(frontend, url_prefix='/')
     from . import api as apistuff
     return app

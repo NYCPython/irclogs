@@ -1,14 +1,39 @@
-{% extends "irclogs/base.html" %}
-{% block content %}
-<ul class="row">
-    {% for message in messages %}
-        <li class="small-12 columns">
-            <span class="datetime">{{ message.created }}</span>
-            <span class="nick">{{ message.nick }}</span>
-            <span class="message">{{ message.body }}</span>
-        </li>
-    {% else %}
-        <li class="small-12 columns">No messages yet</li>
-    {% endfor %}
-</ul>
+{% extends "foundation_base.html" %}
+
+{% block title %}{{ title|default('IRC Logs') }}{% endblock %}
+
+{% block html_attribs %}<html lang="en" ng-app="app">{% endblock %}
+
+{% block scripts %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.0rc3/angular.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.0rc3/angular-route.min.js"></script>
+<script src="{{ url_for('.static', filename='js/app.js') }}"></script>
+<script type="text/ng-template" id="partials/messages.html">
+{# `raw` is used here to allow the use of angulars default template syntax #}
+{% raw %}
+    <div class="row" ng-controller="MessageListCtrl" ng-init="fetch()">
+        <input name="q" ng-model="searchQuery" type="search">
+        <button type="submit" ng-click="fetch()">Search</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Nick</th>
+                    <th>Message</th>
+            </thead>
+            <tr ng-repeat="message in messages">
+                <td>{{ message.created | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{ message.nick }}</td>
+                <td>{{ message.body }}</td>
+            </tr>
+        </table>
+    </div>
+{% endraw %}
+
+</script>
+{% endblock %}
+
+{% block body_content %}
+<div ng-view></div>
 {% endblock %}

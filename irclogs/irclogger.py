@@ -25,7 +25,6 @@ class LoggerBot(SimpleIRCClient):
             message = Message(nick=nick, body=event.arguments[0])
             db.session.add(message)
             db.session.commit()
-            print('{}: {}'.format(message.nick, message.body))
 
     def on_disconnect(self, connection, event):
         sys.exit(0)
