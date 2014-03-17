@@ -1,5 +1,8 @@
 settings.cfg
 
+# We use this as the default sqlite3 db
+dev.db
+
 # Frontend preprocessors
 .sass-cache
 .webassets-cache

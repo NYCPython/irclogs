@@ -60,7 +60,7 @@ After doing that, create a virtual environment ``irclogs`` with Python 3 as your
 and execute the following command to install all the necessary dependencies for this project::
 
     $ pip install -r requirements.txt 
-
+    $ python manage.py db upgrade
     $ python manage.py runserver
 
 The site can be accessed in your browser by visiting `localhost:5000`_.
